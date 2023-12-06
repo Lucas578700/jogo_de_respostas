@@ -1,6 +1,10 @@
 import React, { useState } from "react";
-import { Alert } from "react-native";
+import { Alert, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { createUserSchema } from "../../utils/createUserValidation";
+import Splash from "../../../assets/splash2x.png";
 import {
   Container,
   Title,
@@ -9,29 +13,28 @@ import {
   TouchableOpacityText,
   Input,
 } from "./styles";
-import { createUserWithEmailAndName, getAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { app } from "../../firebase/firebaseConnection";
+
 
 const SignUp = () => {
   const navigation = useNavigation();
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
-  const [numero, setNumero] = useState("");
 
   const auth = getAuth(app);
 
   const handleSignUp = async () => {
-    if (!email || !nome || !numero) {
+    if (!nome || !email) {
       Alert.alert("Erro", "Preencha todos os campos.");
       return;
     }
 
     try {
-      const userCredential = await createUserWithEmailAndName(
+      const userCredential = await createUserWithEmailAndPassword(
         auth,
         nome,
-        email,
-        numero
+        email
       );
       const user = userCredential.user;
       alert("Usuario criado: " + user.email);
@@ -45,13 +48,13 @@ const SignUp = () => {
 
     setNome("");
     setEmail("");
-    setNumero("");
     navigation.navigate("Home");
   };
 
   return (
     <Container>
-      <Title>Cadastro de Usuário</Title>
+      <Image source={Splash} style={{ width: 300, height: 200 }} />
+      <Title>Cadastre-se</Title>
       <InputContainer>
         <Input
           placeholder="Nome"
@@ -68,27 +71,9 @@ const SignUp = () => {
           onChangeText={(text) => setEmail(text)}
         />
       </InputContainer>
-
-      <InputContainer>
-        control={control}
-        render=
-        {({ field: { onChange, value } }) => (
-          <>
-            <Label>Nível de Dificuldade</Label>
-            <DificultyPicker
-              control={control}
-              value={selectedCategory}
-              onChange={setSelectedDificulty}
-              errors={errors}
-              options={categoryOptions}
-            />
-          </>
-        )}
-        name="dificulty"
-      </InputContainer>
-
+      
       <StyledTouchableOpacity onPress={handleSignUp}>
-        <TouchableOpacityText>Cadastrar</TouchableOpacityText>
+        <TouchableOpacityText>Start</TouchableOpacityText>
       </StyledTouchableOpacity>
     </Container>
   );

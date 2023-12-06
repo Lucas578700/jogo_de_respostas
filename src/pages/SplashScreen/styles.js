@@ -5,11 +5,6 @@ import { BlurView } from "expo-blur";
 
 const { width } = Dimensions.get("window");
 
-export const Container = styled.View`
-  flex: 1;
-  background-color: #f7e3e8;
-  padding: 15% 3% 0;
-`;
 
 export const ViewAbsolute = styled(BlurView).attrs({
   style: StyleSheet.absoluteFill,
@@ -29,12 +24,6 @@ export const ViewTop = styled.View`
   flex-direction: row;
   margin-bottom: 20px;
   justify-content: center;
-`;
-export const Title = styled.Text`
-  font-size: 24px;
-  font-weight: bold;
-  color: #ff1493;
-  flex: 1;
 `;
 
 export const InputContainer = styled.View`
@@ -64,4 +53,38 @@ export const Input = styled.TextInput`
   background-color: rgba(247, 227, 232, 0.8);
 `;
 
-// Adicione outros estilos necessários para o seu componente Modal, se necessário
+export const Button = styled.TouchableOpacity`
+  background-color: #3498db;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-top: 100px;
+`;
+
+export const ButtonText = styled.Text`
+  color: #ffffff;
+  font-size: 16px;
+  text-align: center;
+`;
+
+export const Container = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  background-color: #9F7FFF;
+`;
+
+export const Title = styled.Text`
+  font-size: 30px;
+  text-align: center;
+  margin: 10px;
+  color: #FFF;
+  font-weight: bold;
+`;
+
+export const TitleSub = styled.Text`
+  font-size: 20px;
+  text-align: center;
+  margin: 10px;
+  color: #FFF;
+  font-weight: bold;
+`;

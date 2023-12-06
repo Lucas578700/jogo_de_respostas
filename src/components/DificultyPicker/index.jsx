@@ -19,21 +19,20 @@ export const DificultyPicker = ({
     <Picker.Item label={label} value={value} key={value} />
   ));
 
-
   return (
     <>
       <PickerContainer style={{ marginTop: "10%", marginBottom: "10%" }}>
         <Controller
           control={control}
-          render={({ field: { onChange, value } }) => (
+          render={({ field }) => (
             <Picker
               style={{
                 backgroundColor: "#68B2F8",
                 padding: "2%",
                 color: "#fff",
               }}
-              selectedValue={value}
-              onValueChange={onChange}
+              selectedValue={field.value}
+              onValueChange={field.onChange}
             >
               <Picker.Item label="Dificuldade" value="Open" />
               {dificultyOptions}
