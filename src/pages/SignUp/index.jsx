@@ -41,9 +41,7 @@ const SignUp = () => {
     } catch (error) {
       if (error.code === "auth/invalid-email") {
         alert("Email inválido");
-      } else {
-        alert("Ops, algo deu errado: " + error.message);
-      }
+      } 
     }
 
     setNome("");

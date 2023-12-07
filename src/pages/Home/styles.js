@@ -1,15 +1,13 @@
 import styled from "styled-components/native";
 
 import { Dimensions, StyleSheet } from "react-native";
-import { BlurView } from "expo-blur";
 
-const { width } = Dimensions.get("window");
 
 export const QuestionCard = styled.View`
   background-color: white;
   border-radius: 40px;
   padding: 20px;
-  width: 100%;
+  width: 90%;
   align-items: center;
   justify-content: center;
 `;
@@ -27,7 +25,7 @@ export const OptionButton = styled.TouchableOpacity`
   margin: 2%;
   border-width: 2px;
   border-color: #CFC0FF;
-  width: 100%;
+  width: 90%;
 `;
 
 export const OptionText = styled.Text`
