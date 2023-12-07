@@ -1,8 +1,7 @@
-
-import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { TouchableOpacity, FlatList, Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-// import firebase from '@react-native-firebase/database';
+import { getDatabase, ref, onValue, set } from 'firebase/database';
 import {
   Container,
   Title,
@@ -11,32 +10,27 @@ import {
   Button,
   ButtonText,
 } from './style';
-import { getDatabase, ref, set } from 'firebase/database';
-import { useEffect } from 'react';
 
 const Pontuacao = () => {
   const navigation = useNavigation();
   const route = useRoute(); // Obtém o objeto de navegação
-
-  useEffect(() => enviarDadosParaFirebase())
-  const { correctAnswers, totalQuestions } = route.params || {}; // Obtendo os valores passados
+  const [rankingData, setRankingData] = useState([]);
+  const { nome, email, correctAnswers, totalQuestions } = route.params || {}; // Obtendo os valores passados
 
   const handleNavigateToHome = () => {
     navigation.navigate('Home');
   };
 
-  // Função para enviar dados para o Firebase
   const enviarDadosParaFirebase = () => {
     const dados = {
-      nome: 'Nome do usuário',
-      email: 'email@example.com',
-      acertos: 3,
-      erros: 7,
+      nome: nome,
+      email: email,
+      acertos: correctAnswers,
+      erros: totalQuestions - correctAnswers,
     };
 
-    // Enviar dados para o Firebase
     var db = getDatabase();
-    set(ref(db,'pontuacoes/'),dados)
+    set(ref(db, 'pontuacoes/' + nome), dados)
       .then(() => {
         console.log('Dados enviados com sucesso para o Firebase!');
       })
@@ -45,20 +39,44 @@ const Pontuacao = () => {
       });
   };
 
+  useEffect(() => {
+    const db = getDatabase();
+    const pontuacoesRef = ref(db, 'pontuacoes');
+  
+    // Evento para escutar mudanças no nó 'pontuacoes'
+    onValue(pontuacoesRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        // Converter os dados do snapshot para um array
+        const rankingArray = Object.entries(data).map(([key, value]) => ({
+          key,
+          ...value,
+        }));
+        // Ordenar o ranking pelo número de acertos em ordem decrescente
+        rankingArray.sort((a, b) => b.acertos - a.acertos);
+        setRankingData(rankingArray);
+      }
+    });
+  
+    // Enviar dados para o Firebase quando o componente for montado
+    enviarDadosParaFirebase();
+  }, []);
+
   return (
     <Container>
       <Title>RESULT</Title>
       <Score>You scored {correctAnswers}/{totalQuestions}</Score>
       <Title>RANKING</Title>
-      <Ranking>1º Theresa Webb</Ranking>
-      <Ranking>2º Jenny Wilson</Ranking>
-      <Ranking>3º Marvin McKinney</Ranking>
-      <Ranking>4º Kristin Watson</Ranking>
-      <TouchableOpacity onPress={handleNavigateToHome}>
-        <Button>
-          <ButtonText>Jogar novamente</ButtonText>
-        </Button>
-      </TouchableOpacity>
+      <FlatList
+        data={rankingData}
+        renderItem={({ item, index }) => (
+          <Ranking>
+            {`${index + 1}º ${item.nome} - Acertos: ${item.acertos}`}
+          </Ranking>
+        )}
+        keyExtractor={(item) => item.key}
+        ListEmptyComponent={<Text>No ranking yet</Text>}
+      />
     </Container>
   );
 };

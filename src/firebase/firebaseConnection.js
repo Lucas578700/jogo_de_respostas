@@ -5,13 +5,13 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyATwR6Kv7fjbbKskBF3BFHahpkpzfonH_k",
-  authDomain: "jogo-perguntas-respostas-4e853.firebaseapp.com",
-  databaseURL: "https://jogo-perguntas-respostas-4e853-default-rtdb.firebaseio.com",
-  projectId: "jogo-perguntas-respostas-4e853",
-  storageBucket: "jogo-perguntas-respostas-4e853.appspot.com",
-  messagingSenderId: "498711101057",
-  appId: "1:498711101057:web:ddaaa34c45773608f7d780"
+  apiKey: "AIzaSyASWPE0P1iznzoysGvUqW4xijaGJpg-iTM",
+  authDomain: "jogo-final-23d35.firebaseapp.com",
+  databaseURL: "https://jogo-final-23d35-default-rtdb.firebaseio.com",
+  projectId: "jogo-final-23d35",
+  storageBucket: "jogo-final-23d35.appspot.com",
+  messagingSenderId: "463656604510",
+  appId: "1:463656604510:web:cdcff7f679e1f3162875cf"
 };
 
 // Initialize Firebase

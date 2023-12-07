@@ -48,7 +48,11 @@ const SignUp = () => {
 
     setNome("");
     setEmail("");
-    navigation.navigate("Home");
+    navigation.navigate("Home",{
+      nome,
+      email,
+    });
+
   };
 
   return (

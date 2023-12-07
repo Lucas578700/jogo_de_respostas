@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import {
   Container,
   Title,
@@ -11,14 +12,20 @@ import {
   ButtonText,
 } from "./styles";
 
+import Pontuacao from '../Ranking';
+
 const Home = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigation = useNavigation();
+  const route = useRoute();
 
+  const { nome, email,} = route.params || {};
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
+        setLoading(true)
         const response = await fetch('https://opentdb.com/api.php?amount=10&category=18&difficulty=easy&type=multiple');
         const data = await response.json();
         setQuestions(data.results);
@@ -35,6 +42,8 @@ const Home = () => {
   const [correctAnswers, setCorrectAnswers] = useState(0);
 
   const handleOptionPress = (option) => {
+  console.log(currentQuestionIndex)
+
     const currentQuestion = questions[currentQuestionIndex];
 
     if (option === currentQuestion.correct_answer) {
@@ -53,15 +62,15 @@ const Home = () => {
       </Container>
     );
   }
-
+  console.log(currentQuestionIndex)
   if (currentQuestionIndex >= questions.length) {
 
     return (
       <Container>
         <Title>Congratulations! You've answered all the questions.</Title>
         <Title>You got {correctAnswers} out of {questions.length} correct!</Title>
-        <TouchableOpacity onPress={() => navigation.navigate('Pontuacao', { correctAnswers, totalQuestions: questions.length })}>
-          <Button>
+        <TouchableOpacity >
+          <Button onPress={() => navigation.navigate('Pontuacao', { nome, email, correctAnswers, totalQuestions: questions.length })}>
             <ButtonText>Ver Resultado</ButtonText>
           </Button>
         </TouchableOpacity>
@@ -81,7 +90,7 @@ const Home = () => {
           {questions[currentQuestionIndex].incorrect_answers.concat(questions[currentQuestionIndex].correct_answer).sort().map((option, index) => (
             <OptionButton
               key={index}
-              onPress={handleOptionPress(option)}
+              onPress={value => handleOptionPress(option)}
             >
               <OptionText>{option}</OptionText>
             </OptionButton>
